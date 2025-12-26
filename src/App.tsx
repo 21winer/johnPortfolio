@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import Hero from "./Components/Hero";
+import About from "./Components/About";
+import Skills from "./Components/Skills";
+import Projects from "./Components/Projects";
 
 function App() {
   // 1. Initialisation : on regarde d'abord dans le localStorage, sinon on met "dracula"
@@ -25,6 +28,11 @@ function App() {
         {/* On passe la fonction et l'état actuel à la Navbar */}
         <Navbar toggleTheme={toggleTheme} theme={theme} />
         <Hero/>
+      </div>
+      <About/>
+      <div className="p-5 md:px-[15%]">
+        <Skills/>
+        <Projects/>
       </div>
     </div>
   );

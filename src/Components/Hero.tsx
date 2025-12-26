@@ -27,6 +27,7 @@ const Hero = () => {
           <div className="w-64 h-64 md:w-80 md:h-80 bg-linear-to-br from-primary to-accent rounded-full blur-3xl opacity-20 absolute"></div>
           <img
             src={img}
+            fetchPriority="high"
             className="w-70 h-70 md:w-90 md:h-90 object-cover object-top border-8 border-accent shadow-2xl accentscale-[20%]"
             onContextMenu={(e) => e.preventDefault()}
             draggable="false"
