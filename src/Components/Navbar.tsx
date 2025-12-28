@@ -1,44 +1,134 @@
-import { Code, Sun, Moon } from "lucide-react"
+import { Code, Menu, X } from "lucide-react"
+import { useState } from "react"
 
-function Navbar({ toggleTheme, theme }: { toggleTheme: () => void; theme: string }) {
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const closeMenu = () => {
+    setIsOpen(false)
+  }
+
   return (
-    <div className="flex justify-center md:justify-between items-center p-4">
-      <div>
-        <a href="#" className="flex items-center font-bold text-3xl md:text-xl">
-          <Code className="mr-2 w-7 h-7"/>
-          JOHN
-          <span className="text-accent">CODE</span>
-        </a>
-      </div>
-      <div className="hidden md:flex items-center space-x-4">
-        <ul className="flex justify-between space-x-4 font-bold">
-          <li>
-            <a href="#" className="btn btn-md btn-ghost">
-              Accueil
-            </a>
-          </li>
-          <li><a href="#" className="btn btn-md btn-ghost">
-            A propos
-          </a></li>
-          <li>
-            <a href="#" className="btn btn-md btn-ghost">
-              Compétences
-            </a>
-          </li>
-          <li>
-            <a href="#" className="btn btn-md btn-ghost">
-              Mes Projets
-            </a>
-          </li>
-          <li>
-            <a href="#" className="btn btn-md btn-ghost">
-              Contact
-            </a>
-          </li>
-        </ul>
-        <button onClick={toggleTheme} className="btn btn-md btn-ghost">
-          {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+    <div className="relative">
+      <div className="flex justify-between items-center p-4">
+        <div>
+          <a href="#" className="flex items-center font-bold text-3xl md:text-xl">
+            <Code className="mr-2 w-7 h-7"/>
+            JOHN
+            <span className="text-accent">CODE</span>
+          </a>
+        </div>
+        
+        {/* Menu Desktop */}
+        <div className="hidden md:flex items-center space-x-4">
+          <ul className="flex justify-between space-x-4 font-bold">
+            <li>
+              <a href="#Home" className="btn btn-md btn-ghost">
+                Accueil
+              </a>
+            </li>
+            <li><a href="#About" className="btn btn-md btn-ghost">
+              A propos
+            </a></li>
+            <li>
+              <a href="#Competences" className="btn btn-md btn-ghost">
+                Compétences
+              </a>
+            </li>
+            <li>
+              <a href="#Projets" className="btn btn-md btn-ghost">
+                Projets
+              </a>
+            </li>
+            <li>
+              <a href="#Contact" className="btn btn-md btn-ghost">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Bouton Hamburger Mobile */}
+        <button 
+          onClick={toggleMenu}
+          className="md:hidden z-50 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
+      </div>
+
+      {/* Menu Mobile */}
+      <div 
+        className={`md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeMenu}
+      >
+        <div 
+          className={`absolute right-0 top-0 h-full w-64 bg-base-300/95 shadow-xl transform transition-transform duration-300 ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex flex-col p-6 pt-20">
+            <ul className="flex flex-col space-y-2 font-bold">
+              <li>
+                <a 
+                  href="#Home" 
+                  className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={closeMenu}
+                >
+                  Accueil
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#About" 
+                  className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={closeMenu}
+                >
+                  A propos
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#Competences" 
+                  className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={closeMenu}
+                >
+                  Compétences
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#Projets" 
+                  className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={closeMenu}
+                >
+                  Projets
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="#Contact" 
+                  className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={closeMenu}
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   )

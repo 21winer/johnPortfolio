@@ -12,7 +12,6 @@ import imgPRISMA from "../assets/techno/prisma.webp";
 import google from "../assets/companies/google.png";
 import meta from "../assets/companies/meta.webp";
 import amazon from "../assets/companies/amazon.png";
-import { div } from "motion/react-client";
 
 
 
@@ -68,7 +67,7 @@ const experiences = [
 
 function Skills() {
     return (
-        <div>
+        <div id="Competences">
             <Title title="Mes compétences" />
             <div className="flex flex-col-reverse md:flex-row justify-center items-center">
                 <div className="flex gap-4 flex-wrap justify-center items-center md:w-1/3 mt-4 md:mt-0">

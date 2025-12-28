@@ -66,13 +66,13 @@ const projects = [
 
 const Projects = () => {
   return (
-    <div className="mt-10">
+    <div className="mt-10" id="Projets">
         <Title title="Mes projets"/>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-4 mt-5">
             {
                 projects.map((project)=>(
                     <div key={project.id} className="bg-base-300 p-5 h-fit rounded-xl shadow-lg">
-                        <img 
+                        <img
                             src={project.image} 
                             alt={project.title}
                             className="w-full rounded-xl h-56 object-cover" 

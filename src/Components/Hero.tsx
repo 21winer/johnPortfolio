@@ -19,7 +19,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="hero min-h-[70vh] bg-base-100">
+    <section className="hero min-h-[70vh] bg-base-100" id="Home">
       <div className="hero-content text-center lg:text-left flex-col lg:flex-row-reverse gap-12">
 
         {/* Image / Illustration (Optionnel mais recommandé pour un Hero) */}

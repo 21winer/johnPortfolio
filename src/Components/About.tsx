@@ -1,7 +1,6 @@
 import Title from "./Title"
 import img from "../assets/john.png"
 import { CalendarSync, LetterText, Paintbrush } from "lucide-react";
-import { div } from "motion/react-client";
 
 const aboutSections = [
     {
@@ -26,8 +25,8 @@ const aboutSections = [
 
 function About() {
   return (
-    <div className="bg-base-300 p-10 mb-10 md:mb-32">
-      <Title title={"à Propos"} />
+    <div className="bg-base-300 p-10 mb-10 md:mb-32" id="About">
+      <Title title={"à Propos"}/>
       <div className="md:h-screen flex justify-center items-center p-5">
         <div className="hidden md:block">
           <img

@@ -21,4 +21,8 @@ button{
   animation: fadeInUp 0.5s ease-out;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 
