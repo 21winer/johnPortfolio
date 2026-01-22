@@ -1,6 +1,6 @@
 import Title from "./Title"
 import img from "../assets/john.png"
-import { CalendarSync, LetterText, Paintbrush } from "lucide-react";
+import { LetterText, Paintbrush } from "lucide-react";
 
 const aboutSections = [
     {
@@ -11,12 +11,6 @@ const aboutSections = [
     },
     {
         id: 2,
-        title: "Développeur Backend",
-        description: "Je maîtrise les bases du développement backend pour créer des APIs robustes.",
-        icon: <CalendarSync className="text-accent scale-150" />,
-    },
-    {
-        id: 3,
         title: "Passionné par l'UI/UX",
         description: "Créer des interfaces utilisateur attrayantes et fonctionnelles est ma priorité.",
         icon: <Paintbrush className="text-accent scale-150" />,

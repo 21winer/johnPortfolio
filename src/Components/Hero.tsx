@@ -66,10 +66,10 @@ const Hero = () => {
 
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
             <button className="btn btn-accent shadow-lg shadow-accent/20">
-              Mes Projets
+              <a href="#Projets">Mes Projets</a>
             </button>
             <button className="btn btn-outline btn-secondary">
-              Me contacter
+              <a href="#Contact">Me contacter</a>
             </button>
           </div>
         </div>

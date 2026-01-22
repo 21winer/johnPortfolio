@@ -2,66 +2,36 @@ import Title from "./Title"
 import img1 from '../assets/projects/1.png';
 import img2 from '../assets/projects/2.png';
 import img3 from '../assets/projects/3.png';
-import img4 from '../assets/projects/4.png';
-import img5 from '../assets/projects/5.png';
-import img6 from '../assets/projects/6.png'
 import { Github, Video } from "lucide-react";
 
 const projects = [
     {
         id: 1,
-        title: 'Gestionnaire de tâches',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['React', 'Node.js', 'Tailwind CSS'],
-        demoLink: '#',
-        repoLink: '#',
+        title: 'Win-Dashboard',
+        description: 'Cette application est une tour de contrôle intuitive pour piloter votre entreprise en un coup d’œil. Transformez vos données complexes en visuels clairs et suivez vos performances en temps réel.',
+        technologies: ['React', 'typescript', 'Tailwind CSS'],
+        demoLink: 'https://john21-dashboard.vercel.app/',
+        repoLink: 'https://github.com/21winer/Modern-Admin-Dashboard',
         image: img1,
     },
     {
         id: 2,
-        title: 'Plateforme E-commerce',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['Next.js', 'TypeScript', 'Prisma'],
+        title: 'PixelWiner',
+        description: 'PixelWiner est une application de Super-Résolution par Intelligence Artificielle. Elle permet d’améliorer la qualité de tes photos et de les agrandir sans perte de détails.',
+        technologies: ['React.js', 'TypeScript', 'Tailwind CSS'],
         demoLink: '#',
         repoLink: '#',
         image: img2,
     },
     {
         id: 3,
-        title: 'Portfolio interactif',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['HTML', 'CSS', 'JavaScript'],
-        demoLink: '#',
-        repoLink: '#',
+        title: 'TodoMuse',
+        description: 'Cette application est un outil de productivité minimaliste conçu pour aider l’utilisateur à organiser son quotidien en segmentant ses activités par niveau d’importance.',
+        technologies: ['React', 'TypeScript', 'Tailwind CSS'],
+        demoLink: 'https://todo-muse.vercel.app/',
+        repoLink: 'https://github.com/21winer/TodoMuse',
         image: img3,
-    },
-    {
-        id: 4,
-        title: 'Application de Chat en temps réel',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['React', 'Socket.io', 'Express.js'],
-        demoLink: '#',
-        repoLink: '#',
-        image: img4,
-    },
-    {
-        id: 5,
-        title: 'Système de réservation de salles',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['Next.js', 'MongoDB', 'Chakra UI'],
-        demoLink: '#',
-        repoLink: '#',
-        image: img5,
-    },
-    {
-        id: 6,
-        title: 'Analyseur de sentiment',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae magni deserunt debitis recusandae ab harum totam, eum facilis et ratione officia ut inventore aspernatur',
-        technologies: ['Python', 'Flask', 'NLTK'],
-        demoLink: '#',
-        repoLink: '#',
-        image: img6,
-    },
+    }
 ];
 
 const Projects = () => {
