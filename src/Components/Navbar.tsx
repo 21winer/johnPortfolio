@@ -1,8 +1,9 @@
-import { Code, Menu, X } from "lucide-react"
-import { useState } from "react"
+import { Code, Menu, X, ChevronUp } from "lucide-react"
+import { useState, useEffect } from "react"
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [showScroll, setShowScroll] = useState(false)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -11,6 +12,23 @@ function Navbar() {
   const closeMenu = () => {
     setIsOpen(false)
   }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    const checkScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScroll(true)
+      } else {
+        setShowScroll(false)
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll)
+    return () => window.removeEventListener('scroll', checkScroll)
+  }, [])
 
   return (
     <div className="relative">
@@ -65,6 +83,17 @@ function Navbar() {
           )}
         </button>
       </div>
+
+      {/* Bouton Scroll to Top */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 btn btn-accent rounded-full p-3 z-40 transition-opacity duration-300 ${
+          showScroll ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="w-6 h-6" />
+      </button>
 
       {/* Menu Mobile */}
       <div 
