@@ -1,82 +1,144 @@
-import { useState, useEffect } from "react";
-import img from '../assets/john.png'
+import { useState, useEffect, useRef } from 'react';
+import profileImg from '../assets/john.png';
+import reactLogo from '../assets/techno/react.png';
+import tailwindLogo from '../assets/techno/tailwind.png';
+import tsLogo from '../assets/techno/typescript.svg';
+import nextLogo from '../assets/techno/next-js.webp';
 
-const Hero = () => {
-  const roles = [
-    "Développeur Frontend",
-    "Créateur de solutions digitales",
-    "Passionné de React & Tailwind",
-    "Toujours en quête d’innovation 🚀"
-  ];
+const ROLES = [
+  'Front-End Developer',
+  'UI/UX Designer IA',
+  'IA & Automation Specialist',
+  'Graphiste & Streaming Eng.',
+];
 
-  const [index, setIndex] = useState(0);
+function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const textRef = useRef('');
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % roles.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    const fullText = ROLES[roleIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!isDeleting) {
+      if (displayed.length < fullText.length) {
+        timeout = setTimeout(() => setDisplayed(fullText.slice(0, displayed.length + 1)), 70);
+      } else {
+        timeout = setTimeout(() => setIsDeleting(true), 2200);
+      }
+    } else {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 38);
+      } else {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % ROLES.length);
+      }
+    }
+
+    textRef.current = displayed;
+    return () => clearTimeout(timeout);
+  }, [displayed, isDeleting, roleIndex]);
 
   return (
-    <section className="hero min-h-[70vh] bg-base-100" id="Home">
-      <div className="hero-content text-center lg:text-left flex-col lg:flex-row-reverse gap-12">
+    <section className="hero-section" id="home">
+      <div className="container-main" style={{ width: '100%', paddingTop: '24px', paddingBottom: '48px' }}>
+        <div className="hero-grid">
 
-        {/* Image / Illustration (Optionnel mais recommandé pour un Hero) */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-64 h-64 md:w-80 md:h-80 bg-linear-to-br from-primary to-accent rounded-full blur-3xl opacity-20 absolute"></div>
-          <img
-            src={img}
-            fetchPriority="high"
-            className="w-70 h-70 md:w-90 md:h-90 object-cover object-top border-8 border-accent shadow-2xl accentscale-[20%]"
-            onContextMenu={(e) => e.preventDefault()}
-            draggable="false"
-            style={{
-              borderRadius : "30% 70% 70% 30% / 67% 62% 38% 33%"
-            }}
-            alt="John Simou"
-          />
-        </div>
+          {/* ── Text Content ── */}
+          <div className="scroll-reveal-left" style={{ textAlign: 'center' }} data-text-col>
+            <style>{`@media(min-width:1024px){[data-text-col]{text-align:left;}}`}</style>
 
-        {/* Contenu Texte */}
-        <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-black leading-tight">
-            Bonjour, je suis <br />
-            <span className="text-accent inline-block hover:scale-105 transition-transform duration-300">
-              John Simou
+            <span className="hero-badge">
+              <span className="hero-badge-dot" />
+              🚀 Disponible pour de nouveaux projets
             </span>
-          </h1>
 
-          {/* Role switcher avec animation CSS standard */}
-          <div className="h-12 mt-4 overflow-hidden">
-            <p
-              key={index}
-              className="text-xl md:text-2xl font-bold text-secondary animate-bounce-short"
-            >
-              {roles[index]}
+            <h1 className="hero-title">
+              Bonjour, je suis{' '}
+              <span className="hero-title-accent">John Simou</span>
+            </h1>
+
+            <p className="hero-subtitle">
+              {displayed}
+              <span className="typing-cursor" />
             </p>
+
+            <p className="hero-description">
+              Je transforme vos idées visionnaires en solutions numériques d'exception,
+              alliant précision technique, esthétique moderne et puissance de l'intelligence artificielle.
+            </p>
+
+            <div className="hero-actions">
+              <a href="#projects" className="btn-primary">
+                <span className="material-symbols-outlined" style={{ fontSize: 20 }}>rocket_launch</span>
+                Voir mes projets
+              </a>
+              <a href="#contact" className="btn-glass">
+                <span className="material-symbols-outlined" style={{ fontSize: 20 }}>mail</span>
+                Me contacter
+              </a>
+            </div>
           </div>
 
-          <p className="py-6 text-lg text-base-content/80 max-w-lg mx-auto lg:mx-0">
-            Je conçois des interfaces modernes, rapides et responsives avec{" "}
-            <span className="font-semibold text-accent underline decoration-accent/30">
-              React, TypeScript et Tailwind CSS.
-            </span>
-          </p>
+          {/* ── Profile Image ── */}
+          <div className="hero-image-wrapper scroll-reveal-right" style={{ padding: '16px 0' }}>
+            <div className="hero-image-ring">
+              <div className="hero-image-inner">
+                <img
+                  src={profileImg}
+                  alt="John Simou — Front-End Developer & IA"
+                  fetchPriority="high"
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                />
+              </div>
+            </div>
 
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <button className="btn btn-accent shadow-lg shadow-accent/20">
-              <a href="#Projets">Mes Projets</a>
-            </button>
-            <button className="btn btn-outline btn-secondary">
-              <a href="#Contact">Me contacter</a>
-            </button>
+            {/* Floating Tech Icons */}
+            <div
+              className="hero-float-icon glass animate-float"
+              style={{ position: 'absolute', top: '6%', left: '10%', animationDelay: '0s' }}
+              title="React"
+            >
+              <img src={reactLogo} alt="React" />
+            </div>
+            <div
+              className="hero-float-icon glass animate-float"
+              style={{ position: 'absolute', top: '18%', right: '4%', animationDelay: '0.9s' }}
+              title="Next.js"
+            >
+              <img src={nextLogo} alt="Next.js" style={{ borderRadius: 4 }} />
+            </div>
+            <div
+              className="hero-float-icon glass animate-float-reverse"
+              style={{ position: 'absolute', bottom: '8%', right: '12%', animationDelay: '0.4s' }}
+              title="TypeScript"
+            >
+              <img src={tsLogo} alt="TypeScript" />
+            </div>
+            <div
+              className="hero-float-icon glass animate-float"
+              style={{ position: 'absolute', bottom: '20%', left: '4%', animationDelay: '1.3s' }}
+              title="Tailwind CSS"
+            >
+              <img src={tailwindLogo} alt="Tailwind CSS" />
+            </div>
+
+            {/* AI Sparkle */}
+            <div
+              className="hero-float-icon glass animate-float-reverse"
+              style={{ position: 'absolute', top: '42%', left: '-2%', animationDelay: '0.6s' }}
+              title="IA"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 26, color: 'var(--color-primary)' }}>auto_awesome</span>
+            </div>
           </div>
         </div>
-
       </div>
     </section>
   );
-};
+}
 
-export default Hero
+export default Hero;
