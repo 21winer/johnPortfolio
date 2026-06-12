@@ -1,4 +1,4 @@
-import { Code, Linkedin, Github } from 'lucide-react';
+import { Linkedin, Github } from 'lucide-react';
 import { Whatsapp } from 'iconsax-react';
 import logo from '../assets/logoJohnCode.png';
 
