@@ -21,7 +21,15 @@ const ShaderBackground = () => {
     syncSize();
 
     const gl = canvas.getContext('webgl') as WebGLRenderingContext | null;
-    if (!gl) return;
+    if (!gl) {
+      // No WebGL → the CSS fallback background on <body> stays visible.
+      canvas.classList.add('shader-unavailable');
+      return;
+    }
+
+    // Required for fwidth()/dFdx/dFdy in WebGL1 (GLSL ES 1.0). Without it the
+    // fragment shader fails to compile and the whole background renders blank.
+    gl.getExtension('OES_standard_derivatives');
 
     const vs = `
       attribute vec2 a_position;
@@ -33,6 +41,7 @@ const ShaderBackground = () => {
     `;
 
     const fs = `
+      #extension GL_OES_standard_derivatives : enable
       precision highp float;
       uniform float u_time;
       uniform vec2 u_resolution;
@@ -197,6 +206,9 @@ const ShaderBackground = () => {
       const s = gl.createShader(type)!;
       gl.shaderSource(s, src);
       gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+        console.warn('[ShaderBackground] shader compile failed:', gl.getShaderInfoLog(s));
+      }
       return s;
     };
 
@@ -204,6 +216,11 @@ const ShaderBackground = () => {
     gl.attachShader(prog, createShader(gl.VERTEX_SHADER, vs));
     gl.attachShader(prog, createShader(gl.FRAGMENT_SHADER, fs));
     gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.warn('[ShaderBackground] program link failed:', gl.getProgramInfoLog(prog));
+      canvas.classList.add('shader-unavailable');
+      return;
+    }
     gl.useProgram(prog);
 
     const buf = gl.createBuffer();

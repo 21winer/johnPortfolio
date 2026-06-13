@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const STATS = [
-  { id: 'projects', value: 20, label: 'Projets réalisés', suffix: '+' },
-  { id: 'clients', value: 10, label: 'Clients satisfaits', suffix: '+' },
-  { id: 'expertises', value: 6, label: 'Domaines d\'expertise', suffix: '' },
-  { id: 'hours', value: 1000, label: 'Heures de création', suffix: '+' },
-];
+  { id: 'projects', value: 10, suffix: '+' },
+  { id: 'clients', value: 5, suffix: '+' },
+  { id: 'expertises', value: 5, suffix: '' },
+  { id: 'hours', value: 1000, suffix: '+' },
+] as const;
 
 function useCounter(target: number, duration = 1800, started: boolean) {
   const [count, setCount] = useState(0);
@@ -52,6 +53,7 @@ function StatItem({ value, label, suffix, id }: { value: number; label: string; 
 }
 
 function Stats() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function Stats() {
         <div className="stats-grid">
           {STATS.map((stat, i) => (
             <div key={stat.id} style={{ transitionDelay: `${i * 0.1}s` }}>
-              <StatItem {...stat} />
+              <StatItem {...stat} label={t.stats.labels[stat.id]} />
             </div>
           ))}
         </div>

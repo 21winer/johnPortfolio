@@ -1,65 +1,19 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
 import { Code2, Palette, Brain, Zap, Brush, Radio } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const TIMELINE_ITEMS = [
-  {
-    id: 1,
-    title: 'Développement Front-End',
-    description:
-      "Expertise en HTML, CSS, JS, TypeScript, React et Next.js pour créer des interfaces fluides, performantes et accessibles.",
-    icon: Code2,
-    gradient: 'from-blue-500 to-cyan-500',
-    color: 'text-blue-400',
-  },
-  {
-    id: 2,
-    title: 'Design UI/UX assisté par IA',
-    description:
-      "Conception de parcours utilisateurs optimisés via Figma, Design Systems, et prototypage haute fidélité augmenté par l'IA.",
-    icon: Palette,
-    gradient: 'from-purple-500 to-pink-500',
-    color: 'text-purple-400',
-  },
-  {
-    id: 3,
-    title: 'Intelligence Artificielle',
-    description:
-      "Intégration d'outils IA (Claude, LLMs) et maîtrise du Prompt Engineering pour booster la créativité et la productivité.",
-    icon: Brain,
-    gradient: 'from-green-500 to-emerald-500',
-    color: 'text-green-400',
-  },
-  {
-    id: 4,
-    title: 'Automatisation IA',
-    description:
-      "Création de workflows intelligents avec Zapier, Make et scripts Python pour optimiser les processus métier.",
-    icon: Zap,
-    gradient: 'from-yellow-500 to-orange-500',
-    color: 'text-yellow-400',
-  },
-  {
-    id: 5,
-    title: 'Création Graphique',
-    description:
-      "Direction artistique, branding et retouche avancée sous Photoshop pour une identité visuelle forte et mémorable.",
-    icon: Brush,
-    gradient: 'from-red-500 to-pink-500',
-    color: 'text-red-400',
-  },
-  {
-    id: 6,
-    title: 'Streaming Professionnel',
-    description:
-      "Mise en place de régies virtuelles avec vMix et NDI pour des événements live de qualité broadcast.",
-    icon: Radio,
-    gradient: 'from-indigo-500 to-blue-500',
-    color: 'text-indigo-400',
-  },
-];
+  { id: 1, icon: Code2 },
+  { id: 2, icon: Palette },
+  { id: 3, icon: Brain },
+  { id: 4, icon: Zap },
+  { id: 5, icon: Brush },
+  { id: 6, icon: Radio },
+] as const;
 
 function About() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const containerVariants = {
@@ -89,8 +43,8 @@ function About() {
     <section className="section-gap relative overflow-hidden" id="about" ref={sectionRef}>
       {/* Background gradient elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-20 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-10 left-20 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-20 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container-main relative z-10">
@@ -100,15 +54,12 @@ function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-left"
+          style={{ marginBottom: 56 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-            À Propos de Moi
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mb-6 rounded-full"></div>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Un profil multidisciplinaire alliant technique, créativité et intelligence artificielle.
-          </p>
+          <h2 className="section-title">{t.about.title}</h2>
+          <div className="section-underline" style={{ margin: '0 0 12px' }} />
+          <p className="section-subtitle">{t.about.subtitle}</p>
         </motion.div>
 
         {/* Timeline */}
@@ -117,58 +68,50 @@ function About() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="relative pl-6 md:pl-12"
+          className="relative max-w-4xl mx-auto py-6 md:py-10"
         >
-          {/* Vertical timeline line on the left */}
-          <div className="absolute left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 rounded-full"></div>
+          {/* Vertical line: left on mobile & tablet, centered on large screens */}
+          <div className="absolute top-6 bottom-6 md:top-10 md:bottom-10 left-[15px] lg:left-1/2 lg:-translate-x-1/2 w-0.5 bg-orange-500/20 rounded-full"></div>
 
-          {/* Timeline items stacked vertically */}
-          <div className="space-y-10">
-            {TIMELINE_ITEMS.map((item) => {
+          {/* Timeline items — all on the right of the line up to lg, then alternating */}
+          <div className="space-y-12 lg:space-y-20">
+            {TIMELINE_ITEMS.map((item, i) => {
               const Icon = item.icon;
+              const data = t.about.items[item.id];
+              const isRight = i % 2 === 0; // even index → card on the right (large screens)
 
               return (
-                <motion.div key={item.id} variants={itemVariants} className="relative pl-12">
+                <motion.div
+                  key={item.id}
+                  variants={itemVariants}
+                  className={`group relative flex items-center lg:justify-between ${isRight ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
+                >
+                  {/* Spacer for the opposite side (large screens only) */}
+                  <div className="hidden lg:block lg:w-5/12"></div>
+
                   {/* Timeline dot */}
-                  <div className="absolute left-0 top-2 z-10 w-14 h-14 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-gray-700 flex items-center justify-center">
-                    <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-20 transition-opacity`}></div>
-                    <Icon className={`w-6 h-6 ${item.color}`} />
-                  </div>
+                  <div className="absolute left-[15px] lg:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-4 h-4 rounded-full bg-[#0a141d] border-2 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)] transition-all duration-300 group-hover:scale-150 group-hover:bg-orange-500"></div>
 
-                  {/* Content */}
-                  <motion.div whileHover={{ x: 0 }} transition={{ duration: 0.3 }} className="flex-1 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 backdrop-blur-sm group cursor-pointer">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300 -z-10`}></div>
-
-                    <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                      <span className={`inline-block w-1 h-6 bg-gradient-to-b ${item.gradient} rounded-full`}></span>
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed text-sm md:text-base">
-                      {item.description}
-                    </p>
-
-                    <div className="mt-4 pt-4 border-t border-gray-700/30 flex gap-2">
-                      <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${item.gradient}`}></div>
-                      <div className="flex-1 h-2 bg-gradient-to-r from-gray-700 to-transparent rounded-full opacity-40"></div>
+                  {/* Content card — margins keep it clear of the line (inner side) and the edges */}
+                  <div
+                    className={`w-full pl-12 pr-2 my-2 lg:p-0 lg:my-3 lg:w-5/12 ${
+                      isRight ? 'lg:ml-10' : 'lg:mr-10'
+                    }`}
+                  >
+                    <div className="p-7 md:p-8 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 light:from-white light:to-gray-50 light:border-gray-200 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/40">
+                      <h3 className="text-lg md:text-xl font-bold text-orange-500 mb-2 flex items-center gap-2.5">
+                        <Icon className="w-5 h-5 flex-shrink-0" />
+                        {data.title}
+                      </h3>
+                      <p className="text-gray-400 light:text-gray-600 leading-relaxed text-sm md:text-base">
+                        {data.description}
+                      </p>
                     </div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
-        </motion.div>
-
-        {/* Bottom accent */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="mt-20 text-center"
-        >
-          <p className="text-gray-500 text-sm">
-            ✨ Une expertise en constante évolution, alimentée par la passion pour l'innovation
-          </p>
         </motion.div>
       </div>
     </section>

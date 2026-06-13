@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronUp } from 'lucide-react';
 import logo from '../assets/logoJohnCode.png';
+import Controls from './Controls';
+import { useLanguage } from '../context/LanguageContext';
 
 const NAV_LINKS = [
-  { label: 'Accueil', href: '#home' },
-  { label: 'À propos', href: '#about' },
-  { label: 'Compétences', href: '#skills' },
-  { label: 'Projets', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-];
+  { key: 'home', href: '#home' },
+  { key: 'about', href: '#about' },
+  { key: 'skills', href: '#skills' },
+  { key: 'projects', href: '#projects' },
+  { key: 'contact', href: '#contact' },
+] as const;
 
 function Navbar() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -70,21 +73,22 @@ function Navbar() {
                 id={`nav-link-${link.href.slice(1)}`}
                 className={`nav-link ${activeSection === link.href.slice(1) ? 'active' : ''}`}
               >
-                {link.label}
+                {t.nav.links[link.key]}
               </a>
             ))}
           </nav>
 
-          {/* CTA + Hamburger */}
+          {/* Controls + CTA + Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Controls />
             <a href="#contact" className="navbar-cta" id="nav-cta" style={{ textDecoration: 'none' }}>
-              Travaillez avec moi
+              {t.nav.cta}
             </a>
             <button
               className="hamburger-btn"
               id="nav-hamburger"
               onClick={toggleMenu}
-              aria-label="Toggle menu"
+              aria-label={t.nav.toggleMenu}
               aria-expanded={isOpen}
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -109,15 +113,21 @@ function Navbar() {
               className={activeSection === link.href.slice(1) ? 'active' : ''}
               onClick={closeMenu}
             >
-              {link.label}
+              {t.nav.links[link.key]}
             </a>
           ))}
+
+          {/* Theme + language switchers inside the mobile menu */}
+          <div style={{ marginTop: 8 }}>
+            <Controls size="lg" />
+          </div>
+
           <a
             href="#contact"
             id="mobile-nav-cta"
             onClick={closeMenu}
             style={{
-              marginTop: 16,
+              marginTop: 8,
               padding: '14px 40px',
               background: 'var(--color-primary)',
               color: '#fff',
@@ -127,7 +137,7 @@ function Navbar() {
               boxShadow: '0 6px 24px var(--color-primary-glow)',
             }}
           >
-            Hire Me
+            {t.nav.cta}
           </a>
         </nav>
       </div>
@@ -137,7 +147,7 @@ function Navbar() {
         className={`scroll-top-btn ${showScrollTop ? 'visible' : ''}`}
         id="scroll-top-btn"
         onClick={scrollToTop}
-        aria-label="Retour en haut"
+        aria-label={t.nav.backToTop}
       >
         <ChevronUp size={22} />
       </button>

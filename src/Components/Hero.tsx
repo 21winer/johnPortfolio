@@ -4,15 +4,12 @@ import reactLogo from '../assets/techno/react.png';
 import tailwindLogo from '../assets/techno/tailwind.png';
 import tsLogo from '../assets/techno/typescript.svg';
 import nextLogo from '../assets/techno/next-js.webp';
-
-const ROLES = [
-  'Front-End Developer',
-  'UI/UX Designer IA',
-  'IA & Automation Specialist',
-  'Graphiste & Streaming Eng.',
-];
+import { useLanguage } from '../context/LanguageContext';
 
 function Hero() {
+  const { t } = useLanguage();
+  const ROLES = t.hero.roles;
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayed, setDisplayed] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -52,11 +49,11 @@ function Hero() {
 
             <span className="hero-badge">
               <span className="hero-badge-dot" />
-              🚀 Disponible pour de nouveaux projets
+              {t.hero.badge}
             </span>
 
             <h1 className="hero-title">
-              Bonjour, je suis{' '}
+              {t.hero.greeting}{' '}
               <span className="hero-title-accent">John Simou</span>
             </h1>
 
@@ -66,18 +63,17 @@ function Hero() {
             </p>
 
             <p className="hero-description">
-              Je transforme vos idées visionnaires en solutions numériques d'exception,
-              alliant précision technique, esthétique moderne et puissance de l'intelligence artificielle.
+              {t.hero.description}
             </p>
 
             <div className="hero-actions">
               <a href="#projects" className="btn-primary">
                 <span className="material-symbols-outlined" style={{ fontSize: 20 }}>rocket_launch</span>
-                Voir mes projets
+                {t.hero.ctaProjects}
               </a>
               <a href="#contact" className="btn-glass">
                 <span className="material-symbols-outlined" style={{ fontSize: 20 }}>mail</span>
-                Me contacter
+                {t.hero.ctaContact}
               </a>
             </div>
           </div>

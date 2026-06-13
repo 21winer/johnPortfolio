@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Mail, MapPin, Phone, Send, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { toast } from 'react-toastify';
+import { useLanguage } from '../context/LanguageContext';
 
 function Form() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,7 +28,7 @@ function Form() {
 
     // Validation
     if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      toast.error('Veuillez remplir tous les champs', {
+      toast.error(t.contact.form.toastRequired, {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -40,7 +42,7 @@ function Form() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       console.log('Form submitted:', formData);
-      toast.success('Message envoyé avec succès ! 🎉', {
+      toast.success(t.contact.form.toastSuccess, {
         position: 'top-right',
         autoClose: 4000,
       });
@@ -52,7 +54,7 @@ function Form() {
         setIsSubmitted(false);
       }, 3000);
     } catch (error) {
-      toast.error('Une erreur est survenue. Veuillez réessayer.', {
+      toast.error(t.contact.form.toastError, {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -101,32 +103,17 @@ function Form() {
   };
 
   const contactItems = [
-    {
-      icon: Mail,
-      title: 'Email',
-      content: 'jeansimou0@gmail.com',
-      color: 'text-blue-400',
-    },
-    {
-      icon: Phone,
-      title: 'Téléphone',
-      content: '+228 93 16 00 74',
-      color: 'text-cyan-400',
-    },
-    {
-      icon: MapPin,
-      title: 'Localisation',
-      content: 'Lomé, TOGO',
-      color: 'text-purple-400',
-    },
+    { icon: Mail, title: t.contact.info.email, content: 'jeansimou0@gmail.com' },
+    { icon: Phone, title: t.contact.info.phone, content: '+228 93 16 00 74' },
+    { icon: MapPin, title: t.contact.info.location, content: 'Lomé, TOGO' },
   ];
 
   return (
     <section id="contact" className="section-gap relative overflow-hidden">
       {/* Background gradient elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container-main relative z-10">
@@ -136,26 +123,22 @@ function Form() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          style={{ marginBottom: 48 }}
         >
-          <div>
-            <h2 className="flex section-title flex-start">Prenons Contact</h2>
-            <div className="section-underline" style={{ margin: '0 0 12px' }} />
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Vous avez une question ou un projet en tête ? Contactez-moi et discutons ensemble.
-            </p>
-          </div>
+          <h2 className="section-title">{t.contact.title}</h2>
+          <div className="section-underline" style={{ margin: '0 0 12px' }} />
+          <p className="section-subtitle">{t.contact.subtitle}</p>
         </motion.div>
 
-        {/* Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+        {/* Content - flex layout for better control of spacing */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-16">
           {/* Contact Information */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
-            className="space-y-8"
+            className="flex flex-col gap-8 lg:w-1/2"
           >
             {contactItems.map((item, index) => {
               const Icon = item.icon;
@@ -163,18 +146,18 @@ function Form() {
                 <motion.div
                   key={index}
                   variants={contactInfoVariants}
-                  className="group relative p-6 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 backdrop-blur-sm"
+                  className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 light:from-white light:to-gray-50 light:border-gray-200 hover:border-orange-500/40 transition-all duration-300 backdrop-blur-sm"
                 >
                   {/* Hover glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 rounded-2xl transition-all duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-amber-500/0 group-hover:from-orange-500/5 group-hover:to-amber-500/5 rounded-2xl transition-all duration-300"></div>
 
-                  <div className="relative flex items-start space-x-4">
-                    <div className={`${item.color} flex-shrink-0 mt-1 p-3 bg-gray-800/50 rounded-xl group-hover:scale-110 transition-transform`}>
+                  <div className="relative flex items-start gap-5">
+                    <div className="flex-shrink-0 mt-1 p-3 rounded-xl bg-orange-500/10 text-orange-400 ring-1 ring-orange-500/20 group-hover:scale-110 group-hover:bg-orange-500/15 transition-all duration-300">
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                      <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{item.content}</p>
+                      <h3 className="text-lg font-semibold text-white light:text-gray-900 mb-2">{item.title}</h3>
+                      <p className="text-gray-400 light:text-gray-600 group-hover:text-gray-300 light:group-hover:text-gray-800 transition-colors">{item.content}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -189,48 +172,49 @@ function Form() {
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             onSubmit={handleSubmit}
-            className="space-y-6 p-8 md:p-10 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 backdrop-blur-sm"
+            className="space-y-10 p-8 md:p-10 lg:p-12 lg:w-1/2 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 light:from-white light:to-gray-50 light:border-gray-200 backdrop-blur-sm"
           >
-            {/* Name Field */}
-            <motion.div variants={itemVariants} className="relative">
-              <label htmlFor="name" className="block text-sm font-semibold text-white mb-1.5">
-                Votre Nom
-              </label>
-              <motion.input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 backdrop-blur-sm"
-                placeholder="John Doe"
-              />
-            </motion.div>
+            {/* Name + Email on the same row */}
+            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10">
+              <div className="relative">
+                <label htmlFor="name" className="block text-sm font-semibold text-white light:text-gray-800 mb-2">
+                  {t.contact.form.nameLabel}
+                </label>
+                <motion.input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  whileFocus={{ scale: 1.02 }}
+                  className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 light:bg-gray-100 light:border-gray-300 light:text-gray-900 light:placeholder-gray-400 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 backdrop-blur-sm"
+                  placeholder={t.contact.form.namePlaceholder}
+                />
+              </div>
 
-            {/* Email Field */}
-            <motion.div variants={itemVariants} className="relative">
-              <label htmlFor="email" className="block text-sm font-semibold text-white mb-1.5">
-                Adresse Email
-              </label>
-              <motion.input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 backdrop-blur-sm"
-                placeholder="john@example.com"
-              />
+              <div className="relative">
+                <label htmlFor="email" className="block text-sm font-semibold text-white light:text-gray-800 mb-2">
+                  {t.contact.form.emailLabel}
+                </label>
+                <motion.input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  whileFocus={{ scale: 1.02 }}
+                  className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 light:bg-gray-100 light:border-gray-300 light:text-gray-900 light:placeholder-gray-400 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 backdrop-blur-sm"
+                  placeholder={t.contact.form.emailPlaceholder}
+                />
+              </div>
             </motion.div>
 
             {/* Subject Field */}
             <motion.div variants={itemVariants} className="relative">
-              <label htmlFor="subject" className="block text-sm font-semibold text-white mb-1.5">
-                Sujet
+              <label htmlFor="subject" className="block text-sm font-semibold text-white light:text-gray-800 mb-2">
+                {t.contact.form.subjectLabel}
               </label>
               <motion.input
                 type="text"
@@ -240,15 +224,15 @@ function Form() {
                 onChange={handleChange}
                 required
                 whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 backdrop-blur-sm"
-                placeholder="Sujet de votre message"
+                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 light:bg-gray-100 light:border-gray-300 light:text-gray-900 light:placeholder-gray-400 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 backdrop-blur-sm"
+                placeholder={t.contact.form.subjectPlaceholder}
               />
             </motion.div>
 
             {/* Message Field */}
             <motion.div variants={itemVariants} className="relative">
-              <label htmlFor="message" className="block text-sm font-semibold text-white mb-2">
-                Message
+              <label htmlFor="message" className="block text-sm font-semibold text-white light:text-gray-800 mb-2">
+                {t.contact.form.messageLabel}
               </label>
               <motion.textarea
                 id="message"
@@ -258,8 +242,8 @@ function Form() {
                 required
                 rows={5}
                 whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 backdrop-blur-sm resize-none"
-                placeholder="Votre message..."
+                className="w-full px-5 py-4 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 light:bg-gray-100 light:border-gray-300 light:text-gray-900 light:placeholder-gray-400 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 backdrop-blur-sm resize-none"
+                placeholder={t.contact.form.messagePlaceholder}
               />
             </motion.div>
 
@@ -273,17 +257,17 @@ function Form() {
                 className="w-full relative px-6 py-4 rounded-xl font-semibold transition-all duration-300 overflow-hidden group"
               >
                 {/* Background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-500 group-hover:from-orange-500 group-hover:to-amber-400 transition-all duration-300"></div>
 
                 {/* Border glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-100 blur transition-all duration-300 -z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-300 opacity-0 group-hover:opacity-100 blur transition-all duration-300 -z-10"></div>
 
                 {/* Content */}
                 <div className="relative flex items-center justify-center space-x-2 text-white">
                   {isSubmitted ? (
                     <>
                       <CheckCircle className="w-5 h-5" />
-                      <span>Message envoyé !</span>
+                      <span>{t.contact.form.sent}</span>
                     </>
                   ) : isLoading ? (
                     <>
@@ -292,12 +276,12 @@ function Form() {
                           transition={{ duration: 1, repeat: Infinity, ease: [0, 0, 1, 1] as const }}
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       />
-                      <span>Envoi en cours...</span>
+                      <span>{t.contact.form.sending}</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      <span>Envoyer le Message</span>
+                      <span>{t.contact.form.submit}</span>
                     </>
                   )}
                 </div>

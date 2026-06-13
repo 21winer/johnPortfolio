@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import img1 from '../assets/projects/1.png';
 import img2 from '../assets/projects/2.png';
 import img3 from '../assets/projects/3.png';
@@ -7,9 +8,6 @@ const PROJECTS = [
   {
     id: 1,
     title: 'Win-Dashboard',
-    category: 'Web App • Analytics',
-    description:
-      "Tour de contrôle intuitive pour piloter votre entreprise en un coup d'œil. Transformez vos données complexes en visuels clairs et suivez vos performances en temps réel.",
     technologies: ['React', 'TypeScript', 'Tailwind CSS'],
     demoLink: 'https://john21-dashboard.vercel.app/',
     repoLink: 'https://github.com/21winer/Modern-Admin-Dashboard',
@@ -18,9 +16,6 @@ const PROJECTS = [
   {
     id: 2,
     title: 'PixelWiner',
-    category: 'IA • Super-Résolution',
-    description:
-      "Application de Super-Résolution par Intelligence Artificielle. Améliore la qualité de vos photos et les agrandit sans perte de détails grâce à des modèles IA de pointe.",
     technologies: ['React.js', 'TypeScript', 'Tailwind CSS'],
     demoLink: '#',
     repoLink: '#',
@@ -29,17 +24,15 @@ const PROJECTS = [
   {
     id: 3,
     title: 'TodoMuse',
-    category: 'Productivité • UX',
-    description:
-      "Outil de productivité minimaliste conçu pour organiser votre quotidien en segmentant vos activités par niveau d'importance. Clair, rapide, efficace.",
     technologies: ['React', 'TypeScript', 'Tailwind CSS'],
     demoLink: 'https://todo-muse.vercel.app/',
     repoLink: 'https://github.com/21winer/TodoMuse',
     image: img3,
   },
-];
+] as const;
 
 function Projects() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,9 +65,9 @@ function Projects() {
           }}
         >
           <div>
-            <h2 className="section-title">Projets Récents</h2>
+            <h2 className="section-title">{t.projects.title}</h2>
             <div className="section-underline" style={{ margin: '0 0 12px' }} />
-            <p className="section-subtitle">Une sélection de mes dernières réalisations.</p>
+            <p className="section-subtitle">{t.projects.subtitle}</p>
           </div>
           <a
             href="https://github.com/21winer"
@@ -93,7 +86,7 @@ function Projects() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.75')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            Tout voir sur GitHub
+            {t.projects.allOnGithub}
             <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
           </a>
         </div>
@@ -115,9 +108,9 @@ function Projects() {
 
               {/* Body */}
               <div className="project-body">
-                <p className="project-category">{project.category}</p>
+                <p className="project-category">{t.projects.items[project.id].category}</p>
                 <h3 className="project-title">{project.title}</h3>
-                <p className="project-desc">{project.description}</p>
+                <p className="project-desc">{t.projects.items[project.id].description}</p>
 
                 {/* Tags */}
                 <div className="project-tags">
@@ -136,7 +129,7 @@ function Projects() {
                     id={`project-demo-${project.id}`}
                   >
                     <span className="material-symbols-outlined" style={{ fontSize: 16 }}>play_circle</span>
-                    Demo
+                    {t.projects.demo}
                   </a>
                   <a
                     href={project.repoLink}
@@ -146,7 +139,7 @@ function Projects() {
                     id={`project-code-${project.id}`}
                   >
                     <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
-                    Code
+                    {t.projects.code}
                   </a>
                 </div>
               </div>

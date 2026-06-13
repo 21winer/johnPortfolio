@@ -4,6 +4,10 @@
   themes: false;
 }
 
+/* Attribute-driven light variant so components can opt into light-mode
+   overrides with `light:` (used in the Tailwind-colored sections). */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 /* ==============================
    DESIGN TOKENS
    ============================== */
@@ -22,6 +26,19 @@
   --color-on-surface-muted: #a0aec0;
   --color-outline: rgba(255,255,255,0.08);
   --color-outline-strong: rgba(255,255,255,0.15);
+  /* Translucent surfaces / elevation (theme-aware) */
+  --surface-translucent: rgba(23, 33, 41, 0.6);
+  --surface-glass: rgba(15, 23, 42, 0.45);
+  --surface-glass-strong: rgba(23, 33, 41, 0.7);
+  --surface-nav: rgba(10, 20, 29, 0.55);
+  --surface-nav-scrolled: rgba(10, 20, 29, 0.92);
+  --surface-overlay: rgba(10, 20, 29, 0.97);
+  --surface-input: rgba(10, 20, 29, 0.5);
+  --surface-footer: rgba(6, 15, 23, 0.5);
+  --hover-soft: rgba(255, 255, 255, 0.06);
+  --hover-softer: rgba(255, 255, 255, 0.05);
+  --chip-bg: rgba(255, 255, 255, 0.05);
+  --chip-border: rgba(255, 255, 255, 0.1);
   --font-main: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --radius-sm: 8px;
@@ -34,12 +51,44 @@
 }
 
 /* ==============================
+   LIGHT THEME TOKENS
+   Only the colors are re-mapped; everything driven by var(--color-*)
+   adapts automatically. Primary orange is kept for brand consistency.
+   ============================== */
+:root[data-theme="light"] {
+  --color-bg: #f6f8fb;
+  --color-bg-alt: #eef2f7;
+  --color-surface: #ffffff;
+  --color-surface-high: #eef2f7;
+  --color-surface-highest: #e2e8f0;
+  --color-primary: #ea6a0c;
+  --color-primary-dim: #c2570a;
+  --color-primary-glow: rgba(234, 106, 12, 0.18);
+  --color-primary-glow-strong: rgba(234, 106, 12, 0.3);
+  --color-on-bg: #1a2433;
+  --color-on-surface: #1a2433;
+  --color-on-surface-muted: #5a6678;
+  --color-outline: rgba(15, 23, 42, 0.1);
+  --color-outline-strong: rgba(15, 23, 42, 0.18);
+  --surface-translucent: rgba(255, 255, 255, 0.75);
+  --surface-glass: rgba(255, 255, 255, 0.6);
+  --surface-glass-strong: rgba(255, 255, 255, 0.8);
+  --surface-nav: rgba(255, 255, 255, 0.7);
+  --surface-nav-scrolled: rgba(255, 255, 255, 0.92);
+  --surface-overlay: rgba(246, 248, 251, 0.97);
+  --surface-input: rgba(255, 255, 255, 0.85);
+  --surface-footer: rgba(255, 255, 255, 0.6);
+  --hover-soft: rgba(15, 23, 42, 0.06);
+  --hover-softer: rgba(15, 23, 42, 0.05);
+  --chip-bg: rgba(15, 23, 42, 0.04);
+  --chip-border: rgba(15, 23, 42, 0.1);
+}
+
+/* ==============================
    BASE RESET
    ============================== */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -52,10 +101,36 @@ html {
 body {
   font-family: var(--font-main);
   background-color: var(--color-bg);
+  /* Discreet software-dev fallback: faint technical grid + soft glows.
+     Sits behind #shader-canvas; visible whenever WebGL can't render. */
+  background-image:
+    radial-gradient(900px circle at 12% 8%, rgba(249, 115, 22, 0.05), transparent 60%),
+    radial-gradient(820px circle at 88% 90%, rgba(56, 189, 248, 0.045), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  background-attachment: fixed;
   color: var(--color-on-bg);
   overflow-x: hidden;
   line-height: 1.6;
 }
+
+/* Light-mode fallback grid + glows (darker hairlines on a light page). */
+:root[data-theme="light"] body {
+  background-image:
+    radial-gradient(900px circle at 12% 8%, rgba(234, 106, 12, 0.06), transparent 60%),
+    radial-gradient(820px circle at 88% 90%, rgba(14, 116, 144, 0.05), transparent 60%),
+    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+}
+
+/* The WebGL shader is authored for a dark canvas; hide it in light mode
+   so the discreet CSS fallback (above) shows instead. */
+:root[data-theme="light"] #shader-canvas { display: none; }
+
+/* When WebGL/shader is unavailable, hide the empty canvas so the
+   CSS fallback background on <body> shows through. */
+#shader-canvas.shader-unavailable { display: none; }
 
 img { max-width: 100%; height: auto; }
 button { cursor: pointer; border: none; outline: none; font-family: inherit; }
@@ -84,14 +159,14 @@ a { text-decoration: none; color: inherit; }
    GLASS MORPHISM
    ============================== */
 .glass {
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--surface-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-outline);
 }
 
 .glass-strong {
-  background: rgba(23, 33, 41, 0.7);
+  background: var(--surface-glass-strong);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--color-outline-strong);
@@ -224,7 +299,7 @@ a { text-decoration: none; color: inherit; }
   height: 76px;
   display: flex;
   align-items: center;
-  background: rgba(10, 20, 29, 0.55);
+  background: var(--surface-nav);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--color-outline);
@@ -232,7 +307,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .navbar-root.scrolled {
-  background: rgba(10, 20, 29, 0.92);
+  background: var(--surface-nav-scrolled);
   box-shadow: 0 4px 32px rgba(0,0,0,0.4);
 }
 
@@ -290,7 +365,7 @@ a { text-decoration: none; color: inherit; }
   transition: transform var(--transition-base);
 }
 
-.nav-link:hover { color: var(--color-on-bg); background: rgba(255,255,255,0.05); }
+.nav-link:hover { color: var(--color-on-bg); background: var(--hover-softer); }
 .nav-link.active { color: var(--color-primary); font-weight: 700; }
 .nav-link.active::after { transform: translateX(-50%) scaleX(1); }
 
@@ -315,19 +390,51 @@ a { text-decoration: none; color: inherit; }
   .navbar-cta { display: block; }
 }
 
+/* Theme + language switchers */
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 10px;
+  background: var(--hover-soft);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-full);
+  color: var(--color-on-surface-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
+}
+
+.control-btn:hover {
+  background: var(--hover-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary-glow-strong);
+}
+
+.control-lang .lang-active { color: var(--color-primary); }
+.control-lang .lang-sep { opacity: 0.4; margin: 0 1px; }
+
 .hamburger-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 42px;
   height: 42px;
-  background: rgba(255,255,255,0.06);
+  background: var(--hover-soft);
   border-radius: var(--radius-sm);
   color: var(--color-on-bg);
   transition: background var(--transition-base);
 }
 
-.hamburger-btn:hover { background: rgba(255,255,255,0.12); }
+.hamburger-btn:hover { background: var(--hover-soft); }
 
 @media (min-width: 1024px) {
   .hamburger-btn { display: none; }
@@ -342,7 +449,7 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 20, 29, 0.97);
+  background: var(--surface-overlay);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   transform: translateY(-100%);
@@ -523,7 +630,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  background: rgba(255,255,255,0.06);
+  background: var(--hover-soft);
   color: var(--color-on-bg);
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -533,7 +640,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .btn-glass:hover {
-  background: rgba(255,255,255,0.12);
+  background: var(--hover-soft);
   transform: translateY(-2px);
 }
 
@@ -722,7 +829,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .timeline-card {
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   backdrop-filter: blur(16px);
   border: 1px solid var(--color-outline);
   border-radius: var(--radius-lg);
@@ -774,7 +881,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .skill-card {
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   backdrop-filter: blur(16px);
   border: 1px solid var(--color-outline);
   border-radius: var(--radius-lg);
@@ -815,8 +922,8 @@ a { text-decoration: none; color: inherit; }
 
 .skill-tag {
   padding: 4px 12px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--hover-softer);
+  border: 1px solid var(--chip-border);
   border-radius: var(--radius-full);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -865,7 +972,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 6px;
   padding: 12px 16px;
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   border: 1px solid var(--color-outline);
   border-radius: var(--radius-md);
   transition: transform var(--transition-base), border-color var(--transition-base);
@@ -944,7 +1051,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .project-card {
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   backdrop-filter: blur(16px);
   border: 1px solid var(--color-outline);
   border-radius: var(--radius-lg);
@@ -1065,7 +1172,7 @@ a { text-decoration: none; color: inherit; }
 .project-btn-code {
   flex: 1;
   padding: 10px 16px;
-  background: rgba(255,255,255,0.06);
+  background: var(--hover-soft);
   border: 1px solid var(--color-outline);
   color: var(--color-on-bg);
   border-radius: var(--radius-md);
@@ -1079,7 +1186,7 @@ a { text-decoration: none; color: inherit; }
   gap: 6px;
 }
 
-.project-btn-code:hover { background: rgba(255,255,255,0.12); }
+.project-btn-code:hover { background: var(--hover-soft); }
 
 /* ==============================
    CONTACT SECTION
@@ -1094,7 +1201,7 @@ a { text-decoration: none; color: inherit; }
   width: 48px;
   height: 48px;
   border-radius: var(--radius-md);
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   border: 1px solid var(--color-outline);
   display: flex;
   align-items: center;
@@ -1114,7 +1221,7 @@ a { text-decoration: none; color: inherit; }
   width: 46px;
   height: 46px;
   border-radius: var(--radius-md);
-  background: rgba(23, 33, 41, 0.6);
+  background: var(--surface-translucent);
   border: 1px solid var(--color-outline);
   display: flex;
   align-items: center;
@@ -1132,7 +1239,7 @@ a { text-decoration: none; color: inherit; }
 
 /* Contact Form */
 .contact-form {
-  background: rgba(23, 33, 41, 0.65);
+  background: var(--surface-translucent);
   backdrop-filter: blur(20px);
   border: 1px solid var(--color-outline);
   border-radius: var(--radius-xl);
@@ -1156,8 +1263,8 @@ a { text-decoration: none; color: inherit; }
 
 .form-input {
   width: 100%;
-  background: rgba(10, 20, 29, 0.5);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--surface-input);
+  border: 1px solid var(--chip-border);
   border-radius: var(--radius-md);
   padding: 12px 16px;
   color: var(--color-on-bg);
@@ -1204,7 +1311,7 @@ a { text-decoration: none; color: inherit; }
    FOOTER
    ============================== */
 .footer-root {
-  background: rgba(6, 15, 23, 0.5);
+  background: var(--surface-footer);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--color-outline);
   padding: 40px 0;

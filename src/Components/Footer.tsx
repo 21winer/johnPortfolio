@@ -1,14 +1,15 @@
 import { Linkedin, Github } from 'lucide-react';
 import { Whatsapp } from 'iconsax-react';
 import logo from '../assets/logoJohnCode.png';
+import { useLanguage } from '../context/LanguageContext';
 
 const FOOTER_NAV = [
-  { label: 'Accueil', href: '#home' },
-  { label: 'À propos', href: '#about' },
-  { label: 'Compétences', href: '#skills' },
-  { label: 'Projets', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-];
+  { key: 'home', href: '#home' },
+  { key: 'about', href: '#about' },
+  { key: 'skills', href: '#skills' },
+  { key: 'projects', href: '#projects' },
+  { key: 'contact', href: '#contact' },
+] as const;
 
 const SOCIAL = [
   {
@@ -32,6 +33,7 @@ const SOCIAL = [
 ];
 
 function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="footer-root">
       <div className="container-main">
@@ -45,7 +47,7 @@ function Footer() {
             </a>
             <div className="footer-status" style={{ marginTop: 6 }}>
               <span className="status-dot" />
-              <span>Disponible pour de nouveaux projets</span>
+              <span>{t.footer.status}</span>
             </div>
           </div>
 
@@ -53,7 +55,7 @@ function Footer() {
           <nav className="footer-links" aria-label="Footer navigation">
             {FOOTER_NAV.map((link) => (
               <a key={link.href} href={link.href} id={`footer-nav-${link.href.slice(1)}`}>
-                {link.label}
+                {t.nav.links[link.key]}
               </a>
             ))}
           </nav>
@@ -103,7 +105,7 @@ function Footer() {
               color: 'var(--color-on-surface-muted)',
             }}
           >
-            © {new Date().getFullYear()} John Simou. Tous droits réservés.
+            © {new Date().getFullYear()} John Simou. {t.footer.rights}
           </p>
           <p
             style={{
@@ -112,8 +114,8 @@ function Footer() {
               color: 'var(--color-on-surface-muted)',
             }}
           >
-            Conçu & développé avec{' '}
-            <span style={{ color: 'var(--color-primary)' }}>♥</span> par johnCode
+            {t.footer.madeWith}{' '}
+            <span style={{ color: 'var(--color-primary)' }}>♥</span> {t.footer.by}
           </p>
         </div>
       </div>
