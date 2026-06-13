@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Fonts are loaded once in index.html (with preconnect). A CSS @import here
+   would duplicate the request and block rendering, so it's intentionally gone. */
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: false;
-}
 
 /* Attribute-driven light variant so components can opt into light-mode
    overrides with `light:` (used in the Tailwind-colored sections). */
@@ -326,11 +324,31 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
   transition: opacity var(--transition-base);
 }
 
 .navbar-logo:hover { opacity: 0.85; }
 .navbar-logo span { color: var(--color-primary); }
+
+/* Right-hand actions (theme/lang switchers, CTA, hamburger). Never shrink,
+   and keep a guaranteed gap from the logo so they can't collide. */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+/* Small screens: shrink the wordmark and tighten the controls so the theme
+   toggle stops touching the "JohnCode" logo. */
+@media (max-width: 480px) {
+  .navbar-logo { font-size: 1.15rem; gap: 5px; }
+  .navbar-logo img { width: 32px; height: 32px; }
+  .navbar-actions { gap: 8px; margin-left: 10px; }
+  .controls-group { gap: 6px; }
+}
 
 .navbar-desktop {
   display: none;
@@ -438,6 +456,33 @@ a { text-decoration: none; color: inherit; }
 
 @media (min-width: 1024px) {
   .hamburger-btn { display: none; }
+}
+
+/* ── Light mode navbar ──
+   The page background is white, so a white navbar hides the logo (which
+   contains white). Use a dark slate bar instead and lighten the nav text. */
+:root[data-theme="light"] .navbar-root {
+  background: rgba(30, 41, 59, 0.82); /* slate-800 */
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="light"] .navbar-root.scrolled {
+  background: rgba(30, 41, 59, 0.95);
+  box-shadow: 0 4px 32px rgba(15, 23, 42, 0.25);
+}
+:root[data-theme="light"] .navbar-logo { color: #f1f5f9; } /* slate-100 */
+:root[data-theme="light"] .nav-link { color: #cbd5e1; }    /* slate-300 */
+:root[data-theme="light"] .nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="light"] .control-btn {
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+:root[data-theme="light"] .hamburger-btn {
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Mobile Menu */
@@ -1379,6 +1424,30 @@ a { text-decoration: none; color: inherit; }
 
 .footer-links a:hover { color: var(--color-primary); }
 
+/* Light mode: keep the footer dark slate so the white-bearing logo stays
+   visible. Re-mapping the color tokens on the root also fixes the inline
+   `var(--color-*)` text (copyright, links, divider) in one place. */
+:root[data-theme="light"] .footer-root {
+  background: rgba(30, 41, 59, 0.92); /* slate-800 */
+  border-top-color: rgba(255, 255, 255, 0.08);
+  --color-on-bg: #f1f5f9;
+  --color-on-surface-muted: #94a3b8;
+  --color-outline: rgba(255, 255, 255, 0.1);
+}
+
+/* Social icons: bright on the dark slate footer (their default light-mode
+   translucent-white tile would otherwise wash them out). */
+:root[data-theme="light"] .footer-root .social-link {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #f1f5f9;
+}
+:root[data-theme="light"] .footer-root .social-link:hover {
+  color: var(--color-primary);
+  border-color: rgba(249, 115, 22, 0.5);
+  background: rgba(249, 115, 22, 0.14);
+}
+
 /* ==============================
    SECTION TITLE
    ============================== */
@@ -1387,6 +1456,11 @@ a { text-decoration: none; color: inherit; }
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 12px;
+}
+
+/* Light mode: dark slate titles for readability on the white background. */
+:root[data-theme="light"] .section-title {
+  color: #334155; /* slate-700 */
 }
 
 .section-underline {

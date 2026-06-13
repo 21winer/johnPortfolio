@@ -75,7 +75,7 @@ function Skills() {
         <div className="tech-logos-row scroll-reveal">
           {TECH_LOGOS.map((tech) => (
             <div key={tech.name} className="tech-logo-item" title={tech.name}>
-              <img src={tech.img} alt={tech.name} />
+              <img src={tech.img} alt={tech.name} loading="lazy" decoding="async" />
               <span>{tech.name}</span>
             </div>
           ))}
@@ -84,7 +84,7 @@ function Skills() {
         {/* Experience Strip */}
         <div className="scroll-reveal" style={{ marginTop: 40 }}>
           <div className="experience-strip">
-            <img src={yxenlabs} alt="Yxen Labs" />
+            <img src={yxenlabs} alt="Yxen Labs" loading="lazy" decoding="async" />
             <div>
               <p style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-primary-dim)' }}>
                 {t.skills.experience.role}

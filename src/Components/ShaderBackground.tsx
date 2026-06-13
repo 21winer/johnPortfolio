@@ -234,22 +234,70 @@ const ShaderBackground = () => {
     const uTime = gl.getUniformLocation(prog, 'u_time');
     const uRes = gl.getUniformLocation(prog, 'u_resolution');
 
-    let animId: number;
+    let animId = 0;
+    let running = false;
 
-    const render = (t: number) => {
+    const drawFrame = (t: number) => {
       syncSize();
       gl.viewport(0, 0, canvas.width, canvas.height);
       if (uTime) gl.uniform1f(uTime, t * 0.001);
       if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
+    const render = (t: number) => {
+      drawFrame(t);
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
+    const start = () => {
+      if (running) return;
+      running = true;
+      animId = requestAnimationFrame(render);
+    };
+
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(animId);
+    };
+
+    // Respect users who prefer reduced motion: draw a single static frame
+    // and never start the animation loop.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // Only animate while the canvas is actually on-screen AND the tab is
+    // visible — this stops the heavy fragment shader from burning GPU/battery
+    // when the user has scrolled past it or switched tabs.
+    let onScreen = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
+    const sync = () => {
+      if (reduceMotion.matches) {
+        stop();
+        drawFrame(0);
+        return;
+      }
+      if (onScreen && !document.hidden) start();
+      else stop();
+    };
+
+    document.addEventListener('visibilitychange', sync);
+    reduceMotion.addEventListener('change', sync);
+    sync();
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
       ro.disconnect();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+      reduceMotion.removeEventListener('change', sync);
     };
   }, []);
 

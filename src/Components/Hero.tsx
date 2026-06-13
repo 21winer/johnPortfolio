@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import profileImg from '../assets/john.png';
+import profileImg from '../assets/john.webp';
 import reactLogo from '../assets/techno/react.png';
 import tailwindLogo from '../assets/techno/tailwind.png';
 import tsLogo from '../assets/techno/typescript.svg';

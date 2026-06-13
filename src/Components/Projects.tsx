@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import img1 from '../assets/projects/1.png';
-import img2 from '../assets/projects/2.png';
-import img3 from '../assets/projects/3.png';
+import img1 from '../assets/projects/1.webp';
+import img2 from '../assets/projects/2.webp';
+import img3 from '../assets/projects/3.webp';
 
 const PROJECTS = [
   {
@@ -102,7 +102,7 @@ function Projects() {
             >
               {/* Image */}
               <div className="project-img-wrap">
-                <img src={project.image} alt={project.title} loading="lazy" />
+                <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
                 <div className="project-img-overlay" />
               </div>
 

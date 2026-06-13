@@ -79,7 +79,7 @@ function Navbar() {
           </nav>
 
           {/* Controls + CTA + Hamburger */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="navbar-actions">
             <Controls />
             <a href="#contact" className="navbar-cta" id="nav-cta" style={{ textDecoration: 'none' }}>
               {t.nav.cta}
