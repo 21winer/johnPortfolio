@@ -1127,6 +1127,58 @@ a { text-decoration: none; color: inherit; }
 
 .project-card:hover .project-img-wrap img { transform: scale(1.08); }
 
+.project-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(249, 115, 22, 0.16), transparent 62%),
+    linear-gradient(135deg, rgba(15, 23, 32, 0.92), rgba(10, 20, 29, 0.96));
+}
+
+.project-img-placeholder .lock-badge {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.32);
+  box-shadow: 0 10px 32px rgba(249, 115, 22, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  transition: transform 0.6s ease, box-shadow var(--transition-base);
+}
+
+.project-img-placeholder .material-symbols-outlined {
+  font-size: 38px;
+  color: var(--color-primary);
+  font-variation-settings: 'FILL' 1;
+}
+
+.project-card:hover .project-img-placeholder .lock-badge {
+  transform: scale(1.08);
+  box-shadow: 0 14px 40px rgba(249, 115, 22, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.project-btn-confidential {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--hover-soft);
+  border: 1px dashed var(--color-outline);
+  color: var(--color-on-surface-muted);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: default;
+}
+
 .project-img-overlay {
   position: absolute;
   inset: 0;

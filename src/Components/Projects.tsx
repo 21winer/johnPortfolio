@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import img1 from '../assets/projects/1.webp';
 import img2 from '../assets/projects/2.webp';
 import img3 from '../assets/projects/3.webp';
+import img4 from '../assets/projects/4.webp';
 
 const PROJECTS = [
   {
@@ -28,6 +29,27 @@ const PROJECTS = [
     demoLink: 'https://todo-muse.vercel.app/',
     repoLink: 'https://github.com/21winer/TodoMuse',
     image: img3,
+  },
+  {
+    id: 4,
+    title: 'Vitrine Vins — Projet client',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS'],
+    badge: 'confidential',
+    icon: 'lock',
+  },
+  {
+    id: 5,
+    title: "ERP Gestion d'Église",
+    technologies: ['Stitch', 'IA', 'React'],
+    badge: 'confidential',
+    icon: 'lock',
+  },
+  {
+    id: 6,
+    title: 'Salon de Coiffure — Barbier',
+    technologies: ['Stitch', 'UI/UX Design'],
+    badge: 'mockup',
+    image: img4,
   },
 ] as const;
 
@@ -102,7 +124,15 @@ function Projects() {
             >
               {/* Image */}
               <div className="project-img-wrap">
-                <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+                {'image' in project ? (
+                  <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+                ) : (
+                  <div className="project-img-placeholder">
+                    <span className="lock-badge">
+                      <span className="material-symbols-outlined">{project.icon}</span>
+                    </span>
+                  </div>
+                )}
                 <div className="project-img-overlay" />
               </div>
 
@@ -121,26 +151,37 @@ function Projects() {
 
                 {/* Actions */}
                 <div className="project-actions">
-                  <a
-                    href={project.demoLink}
-                    target={project.demoLink !== '#' ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    className="project-btn-demo"
-                    id={`project-demo-${project.id}`}
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>play_circle</span>
-                    {t.projects.demo}
-                  </a>
-                  <a
-                    href={project.repoLink}
-                    target={project.repoLink !== '#' ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    className="project-btn-code"
-                    id={`project-code-${project.id}`}
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
-                    {t.projects.code}
-                  </a>
+                  {'badge' in project ? (
+                    <span className="project-btn-confidential">
+                      <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                        {project.badge === 'mockup' ? 'design_services' : 'lock'}
+                      </span>
+                      {t.projects[project.badge]}
+                    </span>
+                  ) : (
+                    <>
+                      <a
+                        href={project.demoLink}
+                        target={project.demoLink !== '#' ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        className="project-btn-demo"
+                        id={`project-demo-${project.id}`}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: 16 }}>play_circle</span>
+                        {t.projects.demo}
+                      </a>
+                      <a
+                        href={project.repoLink}
+                        target={project.repoLink !== '#' ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        className="project-btn-code"
+                        id={`project-code-${project.id}`}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: 16 }}>code</span>
+                        {t.projects.code}
+                      </a>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

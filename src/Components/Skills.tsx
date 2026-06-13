@@ -81,22 +81,33 @@ function Skills() {
           ))}
         </div>
 
-        {/* Experience Strip */}
-        <div className="scroll-reveal" style={{ marginTop: 40 }}>
-          <div className="experience-strip">
-            <img src={yxenlabs} alt="Yxen Labs" loading="lazy" decoding="async" />
-            <div>
-              <p style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-primary-dim)' }}>
-                {t.skills.experience.role}
-              </p>
-              <p style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--color-on-surface-muted)', marginTop: 2 }}>
-                {t.skills.experience.period}
-              </p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--color-on-surface-muted)', marginTop: 6, lineHeight: 1.5 }}>
-                {t.skills.experience.description}
-              </p>
+        {/* Experience Strips */}
+        <div className="scroll-reveal" style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {t.skills.experience.map((exp, i) => (
+            <div className="experience-strip" key={exp.role}>
+              {i === 0 ? (
+                <img src={yxenlabs} alt="Yxen Labs" loading="lazy" decoding="async" />
+              ) : (
+                <span
+                  className="material-symbols-outlined"
+                  style={{ width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, color: 'var(--color-primary-dim)' }}
+                >
+                  rocket_launch
+                </span>
+              )}
+              <div>
+                <p style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-primary-dim)' }}>
+                  {exp.role}
+                </p>
+                <p style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--color-on-surface-muted)', marginTop: 2 }}>
+                  {exp.period}
+                </p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-on-surface-muted)', marginTop: 6, lineHeight: 1.5 }}>
+                  {exp.description}
+                </p>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

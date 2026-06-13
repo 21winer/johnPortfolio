@@ -86,12 +86,20 @@ const fr = {
       graphism: 'Création Graphique',
       streaming: 'Live Streaming',
     },
-    experience: {
-      role: 'Développeur Frontend — Yxen Labs',
-      period: 'Juil. 2025 — Présent',
-      description:
-        'Développement de landing pages, dashboards UI/UX et applications mobiles via Capacitor.',
-    },
+    experience: [
+      {
+        role: 'Développeur Frontend — Yxen Labs',
+        period: 'Juil. 2025 — Fév. 2026',
+        description:
+          'Développement de landing pages, dashboards UI/UX et applications mobiles via Capacitor.',
+      },
+      {
+        role: 'Développeur Freelance & Projets personnels',
+        period: 'Fév. 2026 — Présent',
+        description:
+          'Missions freelance locales et développement de projets personnels (web & mobile).',
+      },
+    ],
   },
   stats: {
     labels: {
@@ -107,6 +115,8 @@ const fr = {
     allOnGithub: 'Tout voir sur GitHub',
     demo: 'Démo',
     code: 'Code',
+    confidential: 'Projet confidentiel',
+    mockup: 'Maquette',
     items: {
       1: {
         category: 'Web App • Analytics',
@@ -122,6 +132,21 @@ const fr = {
         category: 'Productivité • UX',
         description:
           "Outil de productivité minimaliste conçu pour organiser votre quotidien en segmentant vos activités par niveau d'importance. Clair, rapide, efficace.",
+      },
+      4: {
+        category: 'Site Vitrine • Vin & Œnologie',
+        description:
+          "Site web réalisé pour un client, dédié à la promotion et à la vente de vins rouges et blancs de différentes qualités viticoles. Mis en ligne sur Vercel — détails sous confidentialité.",
+      },
+      5: {
+        category: 'ERP • Développement assisté par IA',
+        description:
+          "Maquette puis développement d'un ERP de gestion pour une église : membres, finances et activités. Conçu avec Stitch et développé à l'aide de l'IA. Projet en cours, sous confidentialité.",
+      },
+      6: {
+        category: 'UI/UX • Maquette',
+        description:
+          "Maquette d'un site vitrine pour un salon de coiffure / barbier : présentation des prestations, prise de rendez-vous et galerie. Conçue avec Stitch.",
       },
     },
   },
@@ -236,12 +261,20 @@ const en: typeof fr = {
       graphism: 'Graphic Design',
       streaming: 'Live Streaming',
     },
-    experience: {
-      role: 'Frontend Developer — Yxen Labs',
-      period: 'Jul 2025 — Present',
-      description:
-        'Building landing pages, UI/UX dashboards and mobile apps with Capacitor.',
-    },
+    experience: [
+      {
+        role: 'Frontend Developer — Yxen Labs',
+        period: 'Jul 2025 — Feb 2026',
+        description:
+          'Building landing pages, UI/UX dashboards and mobile apps with Capacitor.',
+      },
+      {
+        role: 'Freelance Developer & Personal Projects',
+        period: 'Feb 2026 — Present',
+        description:
+          'Local freelance work and building personal projects (web & mobile).',
+      },
+    ],
   },
   stats: {
     labels: {
@@ -257,6 +290,8 @@ const en: typeof fr = {
     allOnGithub: 'See all on GitHub',
     demo: 'Demo',
     code: 'Code',
+    confidential: 'Confidential project',
+    mockup: 'Mockup',
     items: {
       1: {
         category: 'Web App • Analytics',
@@ -272,6 +307,21 @@ const en: typeof fr = {
         category: 'Productivity • UX',
         description:
           'A minimalist productivity tool designed to organize your day by sorting tasks by importance. Clear, fast, effective.',
+      },
+      4: {
+        category: 'Showcase Site • Wine & Œnology',
+        description:
+          'A website built for a client to promote and sell red and white wines of various viticultural qualities. Deployed on Vercel — details under NDA.',
+      },
+      5: {
+        category: 'ERP • AI-assisted development',
+        description:
+          'Mockup then development of a management ERP for a church: members, finances and activities. Designed with Stitch and built with AI assistance. Work in progress, under NDA.',
+      },
+      6: {
+        category: 'UI/UX • Mockup',
+        description:
+          'Mockup of a showcase website for a hair salon / barbershop: services overview, online booking and gallery. Designed with Stitch.',
       },
     },
   },
